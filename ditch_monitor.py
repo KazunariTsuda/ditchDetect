@@ -17,7 +17,9 @@ PSoC が CAN で出す四隅の検知結果と生距離を表示し、
 
 使い方（Raspberry Pi、can0 が 500 kbit/s で up 済み）:
   python3 ditch_monitor.py
-  python3 ditch_monitor.py --channel can0 --out .
+  python3 ditch_monitor.py --channel can0
+
+CSV はスクリプトと同じ場所の log に置く。無ければ作る。
 
 依存: pip install python-can
 """
@@ -344,8 +346,8 @@ def main() -> int:
     parser.add_argument(
         "--out",
         type=Path,
-        default=Path("."),
-        help="CSV の保存先ディレクトリ（既定はカレント）",
+        default=Path(__file__).resolve().parent / "log",
+        help="CSV の保存先ディレクトリ（既定はスクリプト横の log）",
     )
     args = parser.parse_args()
     return run(args.channel, args.bitrate, args.out)
